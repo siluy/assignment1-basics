@@ -13,18 +13,18 @@ from tokenizer import Tokenizer
 # ==============================================================================
 
 # 1. 直接指定你训练好的4个分词器文件路径
-TS_VOCAB_PATH = "vocab_ts10k.json"
-TS_MERGES_PATH = "merges_ts10k.txt"
-OWT_VOCAB_PATH = "vocab_owt.json"
-OWT_MERGES_PATH = "merges_owt.txt"
+TS_VOCAB_PATH = "/home/siluyang/CS336/assignment1-basics/cs336_basics/vocab_ts10k.json"
+TS_MERGES_PATH = "/home/siluyang/CS336/assignment1-basics/cs336_basics/merges_ts10k.txt"
+OWT_VOCAB_PATH = "/home/siluyang/CS336/assignment1-basics/cs336_basics/vocab_owt.json"
+OWT_MERGES_PATH = "/home/siluyang/CS336/assignment1-basics/cs336_basics/merges_owt.txt"
 
 # 2. 指定你的数据集文件路径
-TS_VALID_PATH = "/home/siluyang/CS336/assignment1-basics/data/TinyStoriesV2-GPT4-valid.txt"    # TinyStories 验证集
-OWT_VALID_PATH = "/home/siluyang/CS336/assignment1-basics/data/owt_valid.txt" # OpenWebText 验证集
+TS_VALID_PATH = "/home/siluyang/CS336/assignment1-basics/data/TinyStoriesV2-GPT4-train.txt"    # TinyStories 验证集
+OWT_VALID_PATH = "/home/siluyang/CS336/assignment1-basics/data/owt_train.txt" # OpenWebText 验证集
 
 # 3. 指定编码后数据集的输出路径
-TS_ENCODED_OUTPUT_PATH = "/home/siluyang/CS336/assignment1-basics/data/tinystories_val_encoded.npy"
-OWT_ENCODED_OUTPUT_PATH = "/home/siluyang/CS336/assignment1-basics/data/openwebtext_val_encoded.npy"
+TS_ENCODED_OUTPUT_PATH = "/home/siluyang/CS336/assignment1-basics/data/tinystories_tra_encoded.npy"
+OWT_ENCODED_OUTPUT_PATH = "/home/siluyang/CS336/assignment1-basics/data/openwebtext_tra_encoded.npy"
 
 # ==============================================================================
 # 实验辅助函数
@@ -102,52 +102,52 @@ if __name__ == "__main__":
 
     print("-" * 50)
     
-    # --- (a) & (b) 小问: 计算压缩率 ---
-    print("\n>>> 开始执行 (a) 和 (b) 小问: 计算压缩率\n")
+    # # --- (a) & (b) 小问: 计算压缩率 ---
+    # print("\n>>> 开始执行 (a) 和 (b) 小问: 计算压缩率\n")
     
-    text_sample_ts = sample_documents(TS_VALID_PATH)
-    text_sample_owt = sample_documents(OWT_VALID_PATH)
+    # text_sample_ts = sample_documents(TS_VALID_PATH)
+    # text_sample_owt = sample_documents(OWT_VALID_PATH)
 
-    if tokenizer_ts and text_sample_ts:
-        bytes_ts = len(text_sample_ts.encode('utf-8'))
-        tokens_ts = len(tokenizer_ts.encode(text_sample_ts))
-        print(f"(a) TinyStories 分词器在 TinyStories 样本上的压缩率: {bytes_ts / tokens_ts:.2f} 字节/token")
+    # if tokenizer_ts and text_sample_ts:
+    #     bytes_ts = len(text_sample_ts.encode('utf-8'))
+    #     tokens_ts = len(tokenizer_ts.encode(text_sample_ts))
+    #     print(f"(a) TinyStories 分词器在 TinyStories 样本上的压缩率: {bytes_ts / tokens_ts:.2f} 字节/token")
 
-    if tokenizer_owt and text_sample_owt:
-        bytes_owt = len(text_sample_owt.encode('utf-8'))
-        tokens_owt = len(tokenizer_owt.encode(text_sample_owt))
-        print(f"(a) OpenWebText 分词器在 OpenWebText 样本上的压缩率: {bytes_owt / tokens_owt:.2f} 字节/token")
+    # if tokenizer_owt and text_sample_owt:
+    #     bytes_owt = len(text_sample_owt.encode('utf-8'))
+    #     tokens_owt = len(tokenizer_owt.encode(text_sample_owt))
+    #     print(f"(a) OpenWebText 分词器在 OpenWebText 样本上的压缩率: {bytes_owt / tokens_owt:.2f} 字节/token")
 
-    if tokenizer_ts and text_sample_owt:
-        tokens_cross = len(tokenizer_ts.encode(text_sample_owt))
-        bytes_owt_for_cross = len(text_sample_owt.encode('utf-8'))
-        print(f"(b) TinyStories 分词器在 OpenWebText 样本上的压缩率: {bytes_owt_for_cross / tokens_cross:.2f} 字节/token")
+    # if tokenizer_ts and text_sample_owt:
+    #     tokens_cross = len(tokenizer_ts.encode(text_sample_owt))
+    #     bytes_owt_for_cross = len(text_sample_owt.encode('utf-8'))
+    #     print(f"(b) TinyStories 分词器在 OpenWebText 样本上的压缩率: {bytes_owt_for_cross / tokens_cross:.2f} 字节/token")
 
-    print("-" * 50)
+    # print("-" * 50)
     
-    # --- (c) 小问: 估算吞吐量 ---
-    print("\n>>> 开始执行 (c) 小问: 估算吞吐量\n")
-    if tokenizer_owt and os.path.exists(OWT_VALID_PATH):
-        print(f"正在使用 {OWT_VALID_PATH} 测试 OpenWebText 分词器吞吐量...")
-        with open(OWT_VALID_PATH, "r", encoding="utf-8") as f:
-            content = f.read()
+    # # --- (c) 小问: 估算吞吐量 ---
+    # print("\n>>> 开始执行 (c) 小问: 估算吞吐量\n")
+    # if tokenizer_owt and os.path.exists(OWT_VALID_PATH):
+    #     print(f"正在使用 {OWT_VALID_PATH} 测试 OpenWebText 分词器吞吐量...")
+    #     with open(OWT_VALID_PATH, "r", encoding="utf-8") as f:
+    #         content = f.read()
         
-        total_bytes = len(content.encode('utf-8'))
+    #     total_bytes = len(content.encode('utf-8'))
         
-        start_time = time.time()
-        _ = tokenizer_owt.encode(content) # 使用 encode 测试原始速度
-        end_time = time.time()
+    #     start_time = time.time()
+    #     _ = tokenizer_owt.encode(content) # 使用 encode 测试原始速度
+    #     end_time = time.time()
         
-        elapsed_time = end_time - start_time
-        throughput_mb_s = (total_bytes / elapsed_time) / (1024 * 1024)
+    #     elapsed_time = end_time - start_time
+    #     throughput_mb_s = (total_bytes / elapsed_time) / (1024 * 1024)
         
-        print(f"吞吐量: {throughput_mb_s:.2f} MB/s")
+    #     print(f"吞吐量: {throughput_mb_s:.2f} MB/s")
         
-        pile_gb = 825
-        time_for_pile_hours = (pile_gb * 1024) / throughput_mb_s / 3600
-        print(f"按此速度，处理 825GB 的 Pile 数据集大约需要: {time_for_pile_hours:.2f} 小时")
+    #     pile_gb = 825
+    #     time_for_pile_hours = (pile_gb * 1024) / throughput_mb_s / 3600
+    #     print(f"按此速度，处理 825GB 的 Pile 数据集大约需要: {time_for_pile_hours:.2f} 小时")
 
-    print("-" * 50)
+    # print("-" * 50)
 
     # --- (d) 小问: 编码完整数据集 ---
     print("\n>>> 开始执行 (d) 小问: 编码完整数据集\n")
