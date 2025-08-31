@@ -3,17 +3,17 @@ import numpy as np
 import os
 import time
 
-from .tokenizer import Tokenizer
-from .Transformer import TransformerLM
-from .AdamW import AdamW, clip_grad_norm, consine_schedule
+from tokenizer import Tokenizer
+from Transformer import TransformerLM
+from AdamW import AdamW, clip_grad_norm, consine_schedule
 from cross_entropy import cross_entropy_loss
-from .data_loader import get_batch
-from .checkpointing import save_checkpoint, load_checkpoint
+from data_loader import get_batch
+from checkpointing import save_checkpoint, load_checkpoint
 
 TRAIN_DATA_PATH = "/home/siluyang/CS336/assignment1-basics/data/tinystories_tra_encoded.npy"
 VALID_DATA_PATH = "/home/siluyang/CS336/assignment1-basics/data/tinystories_val_encoded.npy"
 CHECKPOINT_DIR = "/home/siluyang/CS336/assignment1-basics/ckpt"
-CHECKPOINT_PATH = os.path.join(CHECKPOINT_DIR, "checkpoint.pt")
+CHECKPOINT_PATH = os.path.join(CHECKPOINT_DIR, "checkpoint_worms.pt")
 
 VOCAB_SIZE = 10000
 CONTEXT_LENGTH = 256

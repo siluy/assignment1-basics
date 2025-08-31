@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import math
 
-from .Linear import Linear
-from .RoPE import RotaryPositionalEmbedding
-from .attention_functions import scaled_dot_product_attention
+from Linear import Linear
+from RoPE import RotaryPositionalEmbedding
+from attention_functions import scaled_dot_product_attention
 
 class MultiHeadSelfAttention(nn.Module):
     def __init__(self, d_model: int, num_heads: int, use_rope: bool = True, max_seq_len: int = 2048, theta: float = 10000.0, device=None, dtype=None):

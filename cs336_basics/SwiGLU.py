@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from .Linear import Linear
+from Linear import Linear
 
 class PositionWiseFeedForward(nn.Module):
     """
@@ -33,3 +33,23 @@ class PositionWiseFeedForward(nn.Module):
         output = self.w2(gated_output)
         return output
     
+
+class PositionWiseFeedForward_SiLU(nn.Module):
+    """
+    使用 SiLU 激活函数的前馈网络，用于作业要求中的 ablation study
+    """
+    def __init__(self, d_model: int, d_ff: int = None, device=None, dtype=None):
+        super().__init__()
+
+        d_ff = 4 * d_model # 因为少一个线性层，d_ff 变为 4 * d_model
+        self.w1 = Linear(d_model, d_ff, device=device, dtype=dtype)
+        self.w2 = Linear(d_ff, d_model, device=device, dtype=dtype)
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        FFN(x) = W2(SiLU(W1(x)))
+        """
+        w1 = self.w1(x)
+        silu_output = w1 * torch.sigmoid(w1)
+        output = self.w2(silu_output)
+        return output

@@ -1,12 +1,12 @@
 import torch
 import torch.nn as nn
 
-from .MultiHeadSelfAttention import MultiHeadSelfAttention
-from .RMSNorm import RMSNorm
-from .SwiGLU import PositionWiseFeedForward
+from MultiHeadSelfAttention import MultiHeadSelfAttention
+from RMSNorm import RMSNorm
+from SwiGLU import PositionWiseFeedForward
 
-from .Embedding import Embedding
-from .Linear import Linear
+from Embedding import Embedding
+from Linear import Linear
 
 class TransformerBlock(nn.Module):
     """
@@ -28,8 +28,8 @@ class TransformerBlock(nn.Module):
             device=device,
             dtype=dtype
         )
-        self.norm1 = RMSNorm(d_model, device=device, dtype=dtype)
-        self.norm2 = RMSNorm(d_model, device=device, dtype=dtype)
+        # self.norm1 = RMSNorm(d_model, device=device, dtype=dtype)
+        # self.norm2 = RMSNorm(d_model, device=device, dtype=dtype)
 
     def forward(self, x: torch.Tensor, positions: torch.Tensor) -> torch.Tensor:
         """
@@ -44,12 +44,14 @@ class TransformerBlock(nn.Module):
         """
         # 第一层，多头自注意力
         # pre-norm -> Function -> add
-        attn_output = self.attn(self.norm1(x), positions=positions)
+        # attn_output = self.attn(self.norm1(x), positions=positions)
+        attn_output = self.attn(x, positions=positions) # without RMSnorm
         # residual add
         x = x + attn_output
 
         # 第二层，ffn
-        ffn_output = self.ffn(self.norm2(x))
+        # ffn_output = self.ffn(self.norm2(x))
+        ffn_output = self.ffn(x) # without RMSnorm
         # residual add
         x = x + ffn_output
 
@@ -72,6 +74,7 @@ class TransformerLM(nn.Module):
         dtype=None
     ):
         super().__init__()
+        self.context_length = context_length
         # 1. 实例化所以层
         # 词嵌入层
         self.token_embeddings = Embedding(
@@ -93,7 +96,7 @@ class TransformerLM(nn.Module):
             ) for _ in range(num_layers)
         ])
         # 归一化层
-        self.norm_final = RMSNorm(d_model, device=device, dtype=dtype)
+        # self.norm_final = RMSNorm(d_model, device=device, dtype=dtype)
         # 输出投影层(LM Head)
         self.lm_head = Linear(d_model, vocab_size, device=device, dtype=dtype)
 
@@ -116,7 +119,7 @@ class TransformerLM(nn.Module):
         for block in self.blocks:
             x = block(x, positions)
         # 4. 通过归一化层
-        x = self.norm_final(x)
+        # x = self.norm_final(x)
         # 5. 通过输出投影层得到 logits
         logits = self.lm_head(x)
 
